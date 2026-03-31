@@ -91,7 +91,7 @@ function PhoneMockup() {
     <div className="relative">
       {/* Phone frame */}
       <div
-        className="w-[350px] bg-white rounded-[32px] overflow-hidden transition-all duration-500"
+        className="w-[420px] bg-white rounded-[32px] overflow-hidden transition-all duration-500"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         style={{

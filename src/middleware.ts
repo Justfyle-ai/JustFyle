@@ -34,7 +34,7 @@ export async function middleware(request: NextRequest) {
         request.nextUrl.pathname.startsWith('/signup') ||
         request.nextUrl.pathname.startsWith('/forgot-password')
 
-  if (!user && !isAuthPage && request.nextUrl.pathname !== '/') {
+  if (!user && !isAuthPage && request.nextUrl.pathname !== '/' && request.nextUrl.pathname !== '/api/auth/callback') {
         const url = request.nextUrl.clone()
         url.pathname = '/login'
         return NextResponse.redirect(url)

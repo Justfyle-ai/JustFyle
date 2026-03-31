@@ -391,7 +391,7 @@ function AuthForm() {
   const [mode, setMode] = useState<'login' | 'signup'>('signup')
 
   return (
-    <div className="w-full max-w-md">
+    <div className="w-full max-w-md md:max-w-lg">
       {/* Tab switcher */}
       <div className="flex bg-gray-100 rounded-xl p-1 mb-8">
         <button
@@ -562,7 +562,7 @@ export default function Home() {
       </nav>
 
       {/* Main content */}
-      <div className="flex-1 flex items-center justify-center py-8 sm:py-12 px-6 sm:px-8">
+      <div className="flex-1 flex items-center justify-center py-8 sm:py-12 px-6 sm:px-8 md:px-12">
         <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           {/* Left: Auth form */}
           <div>
@@ -597,7 +597,7 @@ export default function Home() {
                 Tax filing that actually{' '}
                 <span className="text-brand-500">saves you money.</span>
               </h1>
-              <p className="text-gray-500 text-base leading-relaxed max-w-md">
+              <p className="text-gray-500 text-base leading-relaxed max-w-md md:max-w-lg">
                 No 50 screens of questions. No confusing forms. Just a
                 conversation with AI — and a CPA who reviews everything before
                 you file. Plus a free tax planning report so you pay less next

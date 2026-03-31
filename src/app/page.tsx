@@ -1,5 +1,4 @@
 'use client'
-// Trigger Vercel deploy after reconnecting Git
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
@@ -467,7 +466,7 @@ function AuthForm() {
               '0 1px 3px rgba(0,0,0,.08), 0 4px 14px rgba(13,147,115,.2)',
           }}
         >
-          {mode === 'signup' ? 'Get Started \u2014 It\'s Free' : 'Log In'}
+          {mode === 'signup' ? 'Get Started — It\'s Free' : 'Log In'}
         </Link>
       </form>
 
@@ -600,7 +599,7 @@ export default function Home() {
               </h1>
               <p className="text-gray-500 text-base leading-relaxed max-w-md">
                 No 50 screens of questions. No confusing forms. Just a
-                conversation with AI \u2014 and a CPA who reviews everything before
+                conversation with AI — and a CPA who reviews everything before
                 you file. Plus a free tax planning report so you pay less next
                 year.
               </p>

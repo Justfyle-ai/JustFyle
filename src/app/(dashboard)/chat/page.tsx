@@ -1,13 +1,106 @@
 'use client'
 
 import { useState } from 'react'
-import { Send, Paperclip, Mic } from 'lucide-react'
+import { Send, Paperclip, Mic, Upload, FileText, PiggyBank, Settings, ArrowRight, MessageSquare } from 'lucide-react'
 
 interface Message {
   id: string
   role: 'user' | 'assistant'
   content: string
   timestamp: Date
+  isWelcome?: boolean
+}
+
+function WelcomeMessage() {
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-10 h-10 bg-brand-500 rounded-full flex items-center justify-center flex-shrink-0">
+          <span className="text-white font-bold text-sm">JF</span>
+        </div>
+        <div>
+          <p className="text-sm font-semibold text-brand-600">JustFyle AI</p>
+          <p className="text-[10px] bg-brand-50 text-brand-600 px-2 py-0.5 rounded-full font-medium inline-block">CPA Verified</p>
+        </div>
+      </div>
+
+      <p className="text-sm text-gray-800 leading-relaxed">
+        Welcome! I&apos;m your AI tax assistant. Think of me as a tax professional you can text. You can ask me anything, and by the end of our conversation, your tax return will be completed, reviewed, and ready to file.
+      </p>
+
+      <p className="text-sm text-gray-800 leading-relaxed">
+        Here&apos;s what makes us different: <strong>your return will be completed without you answering 50 screens of confusing questions.</strong> We just have a conversation. I&apos;ll ask the right questions, find every deduction you qualify for, and a <strong>state board-certified CPA</strong> will personally review your return before we send it to you for signature and electronically file it.
+      </p>
+
+      <p className="text-sm text-gray-800 leading-relaxed">
+        We&apos;ll also figure out how to <strong>save you money for next year</strong>. Unlike tax planners that charge thousands and give you a generic report, we&apos;ll actually help you set up goals and guide you through real strategies that work for your specific situation.
+      </p>
+
+      {/* Quick Tutorial */}
+      <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+        <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide mb-3">Quick Tour of Your Dashboard</p>
+        <div className="space-y-2.5">
+          <div className="flex items-center gap-3">
+            <div className="w-7 h-7 bg-brand-100 rounded-lg flex items-center justify-center flex-shrink-0">
+              <MessageSquare size={14} className="text-brand-600" />
+            </div>
+            <p className="text-xs text-gray-600"><strong className="text-gray-800">Tax Chat</strong> (you&apos;re here!) — Ask questions, upload docs, and file your return through conversation.</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-7 h-7 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+              <FileText size={14} className="text-blue-600" />
+            </div>
+            <p className="text-xs text-gray-600"><strong className="text-gray-800">Documents</strong> — View and manage all your uploaded tax documents (W-2s, 1099s, prior returns).</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-7 h-7 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+              <PiggyBank size={14} className="text-green-600" />
+            </div>
+            <p className="text-xs text-gray-600"><strong className="text-gray-800">Tax Planning</strong> — See your personalized savings strategies and goals for next year.</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-7 h-7 bg-gray-200 rounded-lg flex items-center justify-center flex-shrink-0">
+              <Settings size={14} className="text-gray-600" />
+            </div>
+            <p className="text-xs text-gray-600"><strong className="text-gray-800">Settings</strong> — Update your profile, notification preferences, and account details.</p>
+          </div>
+        </div>
+      </div>
+
+      <p className="text-sm text-gray-800 leading-relaxed">
+        Before we get started, do you have any questions? If not, let&apos;s jump right in!
+      </p>
+
+      {/* Upload CTA */}
+      <div className="bg-brand-50 rounded-xl p-4 border border-brand-200/50">
+        <p className="text-sm font-semibold text-brand-700 mb-2">Let&apos;s start by uploading your documents</p>
+        <p className="text-xs text-brand-600/80 mb-3 leading-relaxed">
+          Upload your <strong>last year&apos;s tax return</strong> (2024) and any <strong>tax documents you&apos;ve received for 2025</strong>. Here are common examples:
+        </p>
+        <div className="grid grid-cols-2 gap-2 mb-4">
+          {[
+            'W-2 (employer wages)',
+            '1099-NEC (freelance income)',
+            '1099-INT (bank interest)',
+            '1099-DIV (dividends)',
+            '1099-B (stock sales)',
+            '1098 (mortgage interest)',
+            '1099-R (retirement dist.)',
+            '1095-A (health insurance)',
+          ].map((doc) => (
+            <div key={doc} className="flex items-center gap-1.5">
+              <div className="w-1.5 h-1.5 bg-brand-400 rounded-full flex-shrink-0" />
+              <p className="text-[11px] text-brand-700">{doc}</p>
+            </div>
+          ))}
+        </div>
+        <button className="w-full flex items-center justify-center gap-2 py-3 bg-brand-500 text-white font-semibold rounded-xl hover:bg-brand-600 transition-all shadow-sm hover:shadow-md text-sm">
+          <Upload size={18} />
+          Upload Tax Documents
+        </button>
+      </div>
+    </div>
+  )
 }
 
 export default function ChatPage() {
@@ -15,8 +108,9 @@ export default function ChatPage() {
     {
       id: '1',
       role: 'assistant',
-      content: "Hi! I'm your JustFyle AI tax assistant. Upload your tax documents (W2s, 1099s, etc.) and I'll help you file your return. What would you like to start with?",
+      content: '',
       timestamp: new Date(),
+      isWelcome: true,
     },
   ])
   const [input, setInput] = useState('')
@@ -51,13 +145,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="flex flex-col h-screen">
-      {/* Header */}
-      <div className="bg-white border-b border-surface-300 px-6 py-4">
-        <h1 className="text-lg font-semibold text-gray-900">Tax Chat</h1>
-        <p className="text-sm text-gray-500">Ask anything about your taxes</p>
-      </div>
-
+    <div className="flex flex-col h-full">
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-6 space-y-4">
         {messages.map((message) => (
@@ -66,31 +154,45 @@ export default function ChatPage() {
             className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-[70%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${
+              className={`max-w-[75%] ${
                 message.role === 'user'
-                  ? 'bg-brand-500 text-white rounded-br-md'
-                  : 'bg-white border border-surface-300 text-gray-800 rounded-bl-md'
-              }`}
+                  ? 'bg-brand-500 text-white rounded-2xl rounded-br-md px-4 py-3'
+                  : 'bg-white border border-gray-200 text-gray-800 rounded-2xl rounded-bl-md px-5 py-4 shadow-sm'
+              } text-sm leading-relaxed`}
             >
-              {message.role === 'assistant' && (
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-semibold text-brand-600">JustFyle AI</span>
-                  <span className="text-[10px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded-full font-medium">
-                    CPA Verified
-                  </span>
-                </div>
+              {message.isWelcome ? (
+                <WelcomeMessage />
+              ) : (
+                <>
+                  {message.role === 'assistant' && (
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-6 h-6 bg-brand-500 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-white font-bold text-[10px]">JF</span>
+                      </div>
+                      <span className="text-xs font-semibold text-brand-600">JustFyle AI</span>
+                      <span className="text-[10px] bg-brand-50 text-brand-600 px-1.5 py-0.5 rounded-full font-medium">
+                        CPA Verified
+                      </span>
+                    </div>
+                  )}
+                  {message.content}
+                </>
               )}
-              {message.content}
             </div>
           </div>
         ))}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="bg-white border border-surface-300 px-4 py-3 rounded-2xl rounded-bl-md">
-              <div className="flex gap-1">
-                <div className="w-2 h-2 bg-gray-300 rounded-full animate-bounce" />
-                <div className="w-2 h-2 bg-gray-300 rounded-full animate-bounce [animation-delay:0.1s]" />
-                <div className="w-2 h-2 bg-gray-300 rounded-full animate-bounce [animation-delay:0.2s]" />
+            <div className="bg-white border border-gray-200 px-5 py-4 rounded-2xl rounded-bl-md shadow-sm">
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 bg-brand-500 rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-white font-bold text-[10px]">JF</span>
+                </div>
+                <div className="flex gap-1">
+                  <div className="w-2 h-2 bg-brand-300 rounded-full animate-bounce" />
+                  <div className="w-2 h-2 bg-brand-300 rounded-full animate-bounce [animation-delay:0.1s]" />
+                  <div className="w-2 h-2 bg-brand-300 rounded-full animate-bounce [animation-delay:0.2s]" />
+                </div>
               </div>
             </div>
           </div>
@@ -98,12 +200,19 @@ export default function ChatPage() {
       </div>
 
       {/* Input */}
-      <div className="bg-white border-t border-surface-300 p-4">
+      <div className="bg-white border-t border-gray-200 p-4">
         <form onSubmit={handleSend} className="flex items-center gap-3">
           <button
             type="button"
-            className="p-2 text-gray-400 hover:text-brand-500 transition-colors"
-            title="Attach document"
+            className="p-2.5 text-gray-400 hover:text-brand-500 hover:bg-brand-50 rounded-xl transition-all"
+            title="Upload tax documents"
+          >
+            <Upload size={20} />
+          </button>
+          <button
+            type="button"
+            className="p-2.5 text-gray-400 hover:text-brand-500 hover:bg-brand-50 rounded-xl transition-all"
+            title="Attach file"
           >
             <Paperclip size={20} />
           </button>
@@ -111,12 +220,12 @@ export default function ChatPage() {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask about your taxes..."
-            className="flex-1 px-4 py-3 rounded-xl border border-surface-300 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm"
+            placeholder="Ask about your taxes, or type your question here..."
+            className="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all text-sm text-gray-900 placeholder:text-gray-400"
           />
           <button
             type="button"
-            className="p-2 text-gray-400 hover:text-brand-500 transition-colors"
+            className="p-2.5 text-gray-400 hover:text-brand-500 hover:bg-brand-50 rounded-xl transition-all"
             title="Voice input"
           >
             <Mic size={20} />
@@ -124,7 +233,7 @@ export default function ChatPage() {
           <button
             type="submit"
             disabled={!input.trim() || isLoading}
-            className="p-3 bg-brand-500 text-white rounded-xl hover:bg-brand-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-3 bg-brand-500 text-white rounded-xl hover:bg-brand-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
           >
             <Send size={18} />
           </button>
